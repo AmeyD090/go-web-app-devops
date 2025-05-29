@@ -80,11 +80,11 @@ pipeline {
 
                             # Replace the tag
                             sed -i "s/tag: ${imageTag}/tag: ${BUILD_NUMBER}/" values.yaml
+                            git pull origin helm-chart
 
                             git add values.yaml
                             git commit -m "Update Image tag in values.yaml to version ${BUILD_NUMBER}" || echo "No changes to commit"
-                            git pull origin helm-chart --rebase
-                            git push https://$GITHUB_USER:$GITHUB_PASS@github.com/$GITHUB_USER/go-web-app-devops.git HEAD:helm-chart
+                            git push --force https://$GITHUB_USER:$GITHUB_PASS@github.com/$GITHUB_USER/go-web-app-devops.git HEAD:helm-chart
                         '''
                     }
                 }
