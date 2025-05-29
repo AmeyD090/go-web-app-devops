@@ -73,6 +73,8 @@ pipeline {
                             git config user.name "AmeyD090"
 
                             echo "Current BUILD_NUMBER: $BUILD_NUMBER"
+                            git fetch origin helm-chart
+                            git reset --hard origin/helm-chart
 
                             # Extract current tag from values.yaml
                             imageTag=$(grep -oP "(?<=tag:\\s)[^\\n]+" values.yaml)
@@ -80,7 +82,7 @@ pipeline {
 
                             # Replace the tag
                             sed -i "s/tag: ${imageTag}/tag: ${BUILD_NUMBER}/" values.yaml
-                            git pull origin helm-chart
+                            
 
                             git add values.yaml
                             git commit -m "Update Image tag in values.yaml to version ${BUILD_NUMBER}" || echo "No changes to commit"
